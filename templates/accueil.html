@@ -1,9 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-    <h1>Page d'accueil</h1>
-</body>
-</html>
+{% extends "layout.html" %}
+{% block content %}
+
+    <div class="container">
+    	{% for article in articles %}
+	    	<div class="jumbotron">
+	    		<h2> <b> {{ article[1] }} </b> </h2>
+	    		<h5> {{ article[3] }} | <i> {{ article[4] }} </i> </h5>
+
+	    		<p> {{ article[5] }} </p>
+	    	</div>
+    	{% endfor %}   	
+    <div>
+
+{% endblock %}
