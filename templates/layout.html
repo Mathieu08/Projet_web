@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Accueil</title>
+	<link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/layout.css">
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+    	<div class="container">
+    		<a href="/" class="navbar-brand">Accueil</a>
+
+    		<div class="navbar-collapse collapse">
+    			<form action="/search" method="post" class="navbar-form navbar-right">
+    				<div class="input-group">
+		    			<input type="text" name="search" class="form-control" placeholder="Search...">
+		    			<span class="input-group-btn">
+		    				<button class="btn btn-default" type="submit" name="envoyer">
+		    					<span class="glyphicon glyphicon-search"></span>
+		    				</button>
+		    			</span>
+		    		</div>
+	    		</form>
+    		</div>
+    	</div>
+    	
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+	<h1>Resultats de la recherche</h1>
+    <ul>
+    	{% for article in articles %}
+    	    <li>{{ article[0] }}</li>
+    	{% endfor %}
+    </ul>
+
+{% endblock %}
