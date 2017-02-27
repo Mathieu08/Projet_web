@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <div class="container">
+    	{% for article in articles %}
+	    	<ul class="list-group">
+	    		<li class="list-group-item">{{ article[1] }} Publi&eacute le: {{ article[4] }}
+	    		  <button class="btn btn-primary">Modifier</button>
+	    		</li>
+	    	</ul>
+    	{% endfor %}   	
+    <div>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container">
+	{% for erreur in erreurs %}
+    	<div class="alert alert-danger">
+    		<p>{{ erreur }}</p>
+    	</div>    
+	{% endfor %}
+
+	<form action="/new" method="post">
+		<div class="form-group">
+			<label>Id:</label>
+			<input type="text" name="article_id" class="form-control">
+		</div>
+		<div class="form-group">
+			<label>Titre:</label>
+			<input type="text" name="titre" class="form-control">
+		</div>
+		<div class="form-group">
+			<label>Identifiant:</label>
+			<input type="text" name="identifiant" class="form-control">
+		</div>
+		<div class="form-group">
+			<label>Auteur:</label>
+			<input type="text" name="auteur" class="form-control">
+		</div>
+		<div class="form-group">
+			<label>Date de publication:</label>
+			<input type="date" name="date_pub" class="form-control" placeholder="YYYY-MM-DD">
+		</div>
+		<div class="form-group">
+			<label>Paragraphe:</label>
+			<textarea class="form-control" name="paragraphe"></textarea>
+		</div>
+		<input type="submit" name="envoyer" class="btn btn-success">
+	</form>
+</div>
+
+{% endblock %}

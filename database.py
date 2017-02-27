@@ -15,6 +15,15 @@ class Database(object):
         if self.connection is not None:
             self.connection.close()
 
+    def get_article(self, identifier):
+        cursor = self.get_connection().cursor()
+        cursor.execute("select * from article where identifiant = ?", (identifier,))
+        article = cursor.fetchone()
+        if article is None:
+            return None
+        else:
+            return article
+
     def get_articles(self):
         cursor = self.get_connection().cursor()
         cursor.execute("select * from article")
@@ -26,3 +35,12 @@ class Database(object):
         cursor.execute("select titre, date_publication from article where titre like ? or paragraphe like ?", ('%{}%'.format(keyword), '%{}%'.format(keyword)))
         articles = cursor.fetchall()
         return [article for article in articles]
+
+    def get_article_by_id(self, article_id):
+        cursor = self.get_connection().cursor()
+        cursor.execute("select * from article where id = ?", (article_id,))
+        article = cursor.fetchone()
+        if article is None:
+            return None
+        else:
+            return article
