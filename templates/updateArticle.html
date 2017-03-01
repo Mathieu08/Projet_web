@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container">
+	{% for erreur in erreurs %}
+    	<div class="alert alert-danger">
+    		<p>{{ erreur }}</p>
+    	</div>    
+	{% endfor %}
+
+	<form action="/update" method="post">
+		<input type="hidden" name="identifiant" value="{{identifiant}}">
+		<div class="form-group">
+			<label>Titre:</label>
+			<input type="text" name="titre" class="form-control" {% if titre %} value="{{titre}}" {% endif %}>
+		</div>
+		<div class="form-group">
+			<label>Paragraphe:</label>
+			<textarea class="form-control" name="paragraphe" rows="5">{% if paragraphe %}{{paragraphe}}{% endif %}</textarea>
+		</div>
+		<button type="submit" class="btn btn-success"> Enregistrer </button>
+		<a class="btn btn-small btn-danger" href="/admin"> Annuler </a>
+	</form>
+</div>
+
+{% endblock %}
