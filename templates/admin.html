@@ -2,13 +2,30 @@
 {% block content %}
 
     <div class="container">
-    	{% for article in articles %}
-	    	<ul class="list-group">
-	    		<li class="list-group-item">{{ article[1] }} Publi&eacute le: {{ article[4] }}
-	    		  <button class="btn btn-primary">Modifier</button>
-	    		</li>
-	    	</ul>
-    	{% endfor %}   	
+    	<table class="table table-striped table-condensed">
+        	<thead>
+        		<tr>
+            		<th style="min-width: 80px;">Liste d'articles</th>                       
+        		</tr>
+        	</thead>
+        	<tbody>
+        		{% for article in articles %}
+        			<tr>            
+            			<td>{{ article[1] }} | <i>Publi&eacute le: {{ article[4] }}</i></td>
+						<td>
+			    			<div class="pull-right">
+			    				<form action="/admin-modif">
+			    					<input type="hidden" name="identifiant" value="{{ article[2] }}">
+			    					<button class="btn btn-primary">Modifier</button>
+			    				</form>
+        					</div>
+        				</td>
+		    			                   
+        			</tr>
+        		{% endfor %}
+        	</tbody>
+    	</table>    
+    	<a href="/admin-nouveau" class="btn btn-small">Ajouter un nouvel article</a>	   	
     <div>
 
 {% endblock %}

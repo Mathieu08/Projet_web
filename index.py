@@ -6,6 +6,7 @@ from flask import g
 from flask import request
 from flask import redirect
 from database import Database
+import re
 
 app = Flask(__name__, static_url_path="", static_folder="static")
 
@@ -24,7 +25,7 @@ def close_connection(exception):
 
 @app.route('/')
 def accueil():
-    articles = get_database().get_articles()
+    articles = get_database().get_recent_articles()
     return render_template('accueil.html', articles=articles)
 
 @app.route('/article/<identifiant>')
@@ -35,10 +36,11 @@ def article(identifiant):
     else:
         return render_template('article.html', article=article)
 
-@app.route('/search', methods=['POST'])
+@app.route('/search')
 def recherche():
-    articles = get_database().get_articles_search(request.form['search'])
-    return render_template('recherche.html', articles=articles)
+    keyword = request.args.get('search')
+    articles = get_database().get_articles_search(keyword)
+    return render_template('recherche.html', articles=articles, keyword=keyword)
 
 @app.route('/admin')
 def admin():
@@ -49,18 +51,58 @@ def admin():
 def admin_nouveau():
     return render_template('newArticle.html')
 
+@app.route('/admin-modif')
+def admin_modif():
+    article = get_database().get_article(request.args.get('identifiant'))
+    titre = article[1]
+    identifiant = article[2]
+    paragraphe = article[5]
+    return render_template('updateArticle.html', titre=titre, paragraphe=paragraphe, identifiant=identifiant)
+
+@app.route('/update', methods=['POST'])
+def modifier_article():
+    erreurs = []
+    titre = request.form['titre']
+    paragraphe = request.form['paragraphe']
+    identifiant = request.form['identifiant']
+
+    if len(titre) == 0 or len(paragraphe) == 0:
+        erreurs.append("Tous les champs sont obligatoires.")
+    if len(titre) > 100:
+        erreurs.append("Le champ 'titre' doit contenir moins de 100 caracteres.")
+    if len(paragraphe) > 500:
+        erreurs.append("Le champ 'paragraphe' doit contenir moins de 500 caracteres.")
+
+    if len(erreurs) != 0:
+        return render_template('updateArticle.html', erreurs=erreurs,
+            titre=titre, paragraphe=paragraphe, identifiant=identifiant)
+    else:
+        get_database().update_article(titre, identifiant, paragraphe)
+        return redirect('/admin')
+
 @app.route('/new', methods=['POST'])
 def nouvel_article():
     erreurs = validation_formulaire(request.form)
+    article_id = request.form['article_id']
+    titre = request.form['titre']
+    identifiant = request.form['identifiant']
+    auteur = request.form['auteur']
+    date_pub = request.form['date_pub']
+    paragraphe = request.form['paragraphe']
 
-    if get_database().get_article(request.form['identifiant']) is not None:
+    if get_database().get_article(identifiant) is not None:
         erreurs.append("L'identifiant existe deja.")
 
-    if get_database().get_article_by_id(request.form['article_id']) is not None:
+    if get_database().get_article_by_id(article_id) is not None:
         erreurs.append("L'id existe deja.")
 
     if len(erreurs) != 0:
-        return render_template('newArticle.html', erreurs=erreurs)
+        return render_template('newArticle.html', erreurs=erreurs,
+            article_id=article_id, titre=titre, identifiant=identifiant,
+            auteur=auteur, date_pub=date_pub, paragraphe=paragraphe)
+    else:
+        get_database().insert_article(article_id, titre, identifiant,
+            auteur, date_pub, paragraphe)
 
     return redirect('/')
 
@@ -75,6 +117,9 @@ def validation_formulaire(form):
 
     if not form['article_id'].isdigit() and article_id != 0:
         erreurs.append("Le champ 'Id' doit etre un nombre.")
+
+    if not re.match(r'^[\.\~\w\-]*$', form['identifiant']):
+        erreurs.append("Identifiant invalide. L'identifiant peut contenir des lettres, des nombres et les caracteres ' - ' , ' _ ' , ' ~ ' , ' . ' .  Il ne doit pas contenir d'espaces.")
 
     if (article_id == 0 or titre == 0 or identifiant == 0 or auteur == 0 or
         date_pub == 0 or paragraphe == 0):

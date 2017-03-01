@@ -1,10 +1,16 @@
 {% extends "layout.html" %}
 {% block content %}
-	<h1>Resultats de la recherche</h1>
-    <ul>
-    	{% for article in articles %}
-    	    <li>{{ article[0] }}</li>
-    	{% endfor %}
-    </ul>
+    <div class="container">
+    	<h1>Resultats de la recherche {% if keyword %}'{{keyword}}'{% endif %}</h1>
+	    <ul class="list-group">
+	    	{% for article in articles %}
+	    	    <li class="list-group-item">
+	    	    	<a href="/article/{{article[2]}}">{{ article[0] }} </a>
+	    	    	| <i>Publi&eacute le: {{ article[1] }}
+	    	    </li>
+	    	{% endfor %}
+	    </ul>
+    </div>
+	
 
 {% endblock %}

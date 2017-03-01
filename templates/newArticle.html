@@ -11,29 +11,30 @@
 	<form action="/new" method="post">
 		<div class="form-group">
 			<label>Id:</label>
-			<input type="text" name="article_id" class="form-control">
+			<input type="text" name="article_id" class="form-control" {% if article_id %} value="{{article_id}}" {% endif %}>
 		</div>
 		<div class="form-group">
 			<label>Titre:</label>
-			<input type="text" name="titre" class="form-control">
+			<input type="text" name="titre" class="form-control" {% if titre %} value="{{titre}}" {% endif %}>
 		</div>
 		<div class="form-group">
 			<label>Identifiant:</label>
-			<input type="text" name="identifiant" class="form-control">
+			<input type="text" name="identifiant" class="form-control" {% if identifiant %} value="{{identifiant}}" {% endif %}>
 		</div>
 		<div class="form-group">
 			<label>Auteur:</label>
-			<input type="text" name="auteur" class="form-control">
+			<input type="text" name="auteur" class="form-control" {% if auteur %} value="{{auteur}}" {% endif %}>
 		</div>
 		<div class="form-group">
 			<label>Date de publication:</label>
-			<input type="date" name="date_pub" class="form-control" placeholder="YYYY-MM-DD">
+			<input type="date" name="date_pub" class="form-control" placeholder="YYYY-MM-DD" {% if date_pub %} value="{{date_pub}}" {% endif %}>
 		</div>
 		<div class="form-group">
 			<label>Paragraphe:</label>
-			<textarea class="form-control" name="paragraphe"></textarea>
+			<textarea class="form-control" name="paragraphe" rows="5">{% if paragraphe %}{{paragraphe}}{% endif %}</textarea>
 		</div>
-		<input type="submit" name="envoyer" class="btn btn-success">
+		<button type="submit" class="btn btn-success"> Cr&eacute;er </button>
+		<input type="text" id="d">
 	</form>
 </div>
 

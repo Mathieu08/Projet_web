@@ -30,9 +30,15 @@ class Database(object):
         articles = cursor.fetchall()
         return [article for article in articles]
 
+    def get_recent_articles(self):
+        cursor = self.get_connection().cursor()
+        cursor.execute("select * from article where date(date_publication) <= date('now') order by date(date_publication) desc Limit 5")
+        articles = cursor.fetchall()
+        return [article for article in articles]
+
     def get_articles_search(self, keyword):
         cursor = self.get_connection().cursor()
-        cursor.execute("select titre, date_publication from article where titre like ? or paragraphe like ?", ('%{}%'.format(keyword), '%{}%'.format(keyword)))
+        cursor.execute("select titre, date_publication, identifiant from article where titre like ? or paragraphe like ?", ('%{}%'.format(keyword), '%{}%'.format(keyword)))
         articles = cursor.fetchall()
         return [article for article in articles]
 
@@ -44,3 +50,17 @@ class Database(object):
             return None
         else:
             return article
+
+    def insert_article(self, article_id, titre, identifiant, auteur, date_pub, paragraphe):
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("insert into article(id, titre, identifiant,"
+                       "auteur, date_publication, paragraphe)"
+                       " values(?, ?, ?, ?, date(?), ?)", (article_id, titre, identifiant, auteur, date_pub, paragraphe))
+        connection.commit()
+
+    def update_article(self, titre, identifiant, paragraphe):
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("update article set titre = ?, paragraphe = ? where identifiant = ?", (titre, paragraphe, identifiant))
+        connection.commit()
