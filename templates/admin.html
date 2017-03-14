@@ -11,7 +11,9 @@
         	<tbody>
         		{% for article in articles %}
         			<tr>            
-            			<td>{{ article[1] }} | <i>Publi&eacute le: {{ article[4] }}</i></td>
+            			<td>
+                            <a href="/article/{{article[2]}}">{{ article[1] }} </a>
+                            | <i>Publi&eacute le: {{ article[4] }}</i></td>
 						<td>
 			    			<div class="pull-right">
 			    				<form action="/admin-modif">

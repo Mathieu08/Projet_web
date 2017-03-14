@@ -2,6 +2,7 @@
 {% block content %}
     <div class="container">
     	<h1>Resultats de la recherche {% if keyword %}'{{keyword}}'{% endif %}</h1>
+    	<br>
 	    <ul class="list-group">
 	    	{% for article in articles %}
 	    	    <li class="list-group-item">

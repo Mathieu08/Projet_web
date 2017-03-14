@@ -1,9 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Error</title>
+    <meta charset="utf-8">
+	<title>Page not found</title>
+	<link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/404.css">
 </head>
 <body>
-<h1>Error Page Not Found!!</h1>
+	<div class="container">
+		<div class="jumbotron">
+			<h1>404</h1>
+		  	<h2>Page non trouv&eacute;e</h2>
+		  	<p>Desol&eacute;, la page que vous avez cherch&eacute;e n'existe pas.</p>
+		  	<div class="recherche">	
+		  		<form action="/search" >
+    				<div class="input-group">
+		    			<input type="search" name="search" class="form-control" placeholder="Recherche...">
+		    			<span class="input-group-btn">
+		    				<button class="btn btn-default" type="submit">
+		    					<span class="glyphicon glyphicon-search"></span>
+		    				</button>
+		    			</span>
+		    		</div>
+	    		</form>
+		  	</div>
+		  	<br>
+			<a class="btn btn-primary btn-large" href="/"> <span class="glyphicon glyphicon-home"></span> 
+				Page d'accueil
+			</a>
+		</div>
+	</div>
+
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

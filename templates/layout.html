@@ -4,7 +4,8 @@
 	<meta charset="utf-8">
 	<title>Articles</title>
 	<link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="/vendor/datepicker/datepicker3.min.css" />
+
 	<link rel="stylesheet" type="text/css" href="/layout.css">
 </head>
 <body>
@@ -32,7 +33,7 @@
 
     			<form action="/search" class="navbar-form navbar-right">
     				<div class="input-group">
-		    			<input type="search" name="search" class="form-control" placeholder="Search...">
+		    			<input type="search" name="search" class="form-control" placeholder="Recherche...">
 		    			<span class="input-group-btn">
 		    				<button class="btn btn-default" type="submit">
 		    					<span class="glyphicon glyphicon-search"></span>
@@ -49,9 +50,8 @@
 
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-$( "#d" ).datepicker();
-</script>
+
+    <script src="/vendor/datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="/vendor/jquery/datepicker.js" ></script>
 </body>
 </html>

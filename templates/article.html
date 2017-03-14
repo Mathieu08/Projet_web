@@ -2,8 +2,15 @@
 {% block content %}
 
 {% if article %}
-<h2>{{article[1]}}</h2>
-<p>{{article[4]}}</p>
+<div class="container">
+	<div class="jumbotron">
+		<h1>{{article[1]}}</h1>
+		<h4>{{article[3]}} | <i> Publi&eacute; le {{article[4]}} </i> </h4>
+		<br>
+        <p>{{article[5]}}</p>
+	</div>
+</div>
+
 {% endif %}
 
 {% endblock %}
