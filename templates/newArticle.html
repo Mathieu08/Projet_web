@@ -13,17 +13,14 @@
 
 	<form action="/new" method="post">
 		<div class="form-group">
-			<label>Id:</label>
-			<input type="text" name="article_id" class="form-control" {% if article_id %} value="{{article_id}}" {% endif %}>
-		</div>
-		<div class="form-group">
 			<label>Titre:</label>
-			<input type="text" name="titre" class="form-control" {% if titre %} value="{{titre}}" {% endif %}>
+			<input type="text" id="titre" name="titre" class="form-control" onchange="onTitleChange();" {% if titre %} value="{{titre}}" {% endif %}>
 		</div>
 		<div class="form-group">
 			<label>Identifiant:</label>
-			<input type="text" name="identifiant" class="form-control" {% if identifiant %} value="{{identifiant}}" {% endif %}>
+			<input type="text" id="ident" name="identifiant" class="form-control" onchange="onIdentChange();" {% if identifiant %} value="{{identifiant}}" {% endif %}>
 		</div>
+		<div id="err"></div>
 		<div class="form-group">
 			<label>Auteur:</label>
 			<input type="text" name="auteur" class="form-control" {% if auteur %} value="{{auteur}}" {% endif %}>
@@ -51,4 +48,7 @@
 	</form>
 </div>
 
+{% endblock %}
+{% block script %}
+  <script src="/js/newArticle.js"></script>
 {% endblock %}

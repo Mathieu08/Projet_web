@@ -5,7 +5,7 @@
 	<title>Articles</title>
 	<link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/vendor/datepicker/datepicker3.min.css" />
-
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 	<link rel="stylesheet" type="text/css" href="/layout.css">
 </head>
 <body>
@@ -53,5 +53,8 @@
 
     <script src="/vendor/datepicker/bootstrap-datepicker.min.js"></script>
     <script src="/vendor/jquery/datepicker.js" ></script>
+
+    {% block script %}{% endblock %}
+
 </body>
 </html>

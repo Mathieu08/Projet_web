@@ -1,5 +1,12 @@
 # coding: utf8
 
+#
+# Nom: Caouette
+# Prenom: Mathieu
+# Code permanent: CAOM08109603
+# Courriel: caouette.mathieu@courrier.uqam.ca
+#
+
 import sqlite3
 
 
@@ -22,14 +29,18 @@ class Database(object):
         cursor.execute("select * from article where identifiant = ? and "
                        "date(date_publication) <= date('now')", (identifier,))
         article = cursor.fetchone()
-        if article is None:
-            return None
-        else:
-            return article
+        return article
 
     def get_articles(self):
         cursor = self.get_connection().cursor()
         cursor.execute("select * from article")
+        articles = cursor.fetchall()
+        return [article for article in articles]
+
+    def get_articles_publie(self):
+        cursor = self.get_connection().cursor()
+        cursor.execute("select * from article where date(date_publication) "
+                       "<= date('now')")
         articles = cursor.fetchall()
         return [article for article in articles]
 
@@ -50,23 +61,14 @@ class Database(object):
         articles = cursor.fetchall()
         return [article for article in articles]
 
-    def get_article_by_id(self, article_id):
-        cursor = self.get_connection().cursor()
-        cursor.execute("select * from article where id = ?", (article_id,))
-        article = cursor.fetchone()
-        if article is None:
-            return None
-        else:
-            return article
-
-    def insert_article(self, article_id, titre, identifiant, auteur,
+    def insert_article(self, titre, identifiant, auteur,
                        date_pub, paragraphe):
         connection = self.get_connection()
         cursor = connection.cursor()
-        cursor.execute("insert into article(id, titre, identifiant,"
+        cursor.execute("insert into article(titre, identifiant,"
                        "auteur, date_publication, paragraphe)"
-                       " values(?, ?, ?, ?, date(?), ?)",
-                       (article_id, titre, identifiant, auteur,
+                       " values(?, ?, ?, date(?), ?)",
+                       (titre, identifiant, auteur,
                         date_pub, paragraphe))
         connection.commit()
 
@@ -76,3 +78,59 @@ class Database(object):
         cursor.execute("update article set titre = ?, paragraphe = ? where "
                        "identifiant = ?", (titre, paragraphe, identifiant))
         connection.commit()
+
+    def get_user_login_info(self, username):
+        cursor = self.get_connection().cursor()
+        cursor.execute("select salt, hash from users where utilisateur = ?", (username,))
+        user = cursor.fetchone()
+        return user
+
+    def save_session(self, session_id, username):
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("insert into sessions(id_session, utilisateur) values(?, ?)",
+                       (session_id, username))
+        connection.commit()
+
+    def delete_session(self, session_id):
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("delete from sessions where id_session = ?", (session_id,))
+        connection.commit()
+
+    def save_token(self, email, token):
+        connection = self.get_connection()
+        connection.execute("insert into tokens(email, id_token) "
+                           "values(?, ?)", (email, token))
+        connection.commit()
+
+    def get_email_by_token(self, token):
+        cursor = self.get_connection().cursor()
+        cursor.execute("select email from tokens where id_token=?",
+                       (token,))
+        user = cursor.fetchone()
+        if user is None:
+            return None
+        else:
+            return user
+
+    def create_user(self, username, email, salt, hashed):
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("insert into users(utilisateur, email, salt, hash) values(?, ?, ?, ?)", (username, email, salt, hashed))
+        cursor.execute("delete from tokens where email = ?", (email,))
+        connection.commit()
+
+    def reset_password(self, email, salt, hashed):
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("update users set salt = ?, hash = ? where email = ?",
+                       (salt, hashed, email))
+        cursor.execute("delete from tokens where email = ?", (email,))
+        connection.commit()
+
+    def get_user_by_email(self, email):
+        cursor = self.get_connection().cursor()
+        cursor.execute("select * from users where email = ?", (email,))
+        user = cursor.fetchone()
+        return user
