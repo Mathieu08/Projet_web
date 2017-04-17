@@ -21,7 +21,7 @@ from email.MIMEText import MIMEText
 class Gmail(object):
 
     def __init__(self):	
-        self.source_address = "projet.inf3005@gmail.com"
+        self.source_address = ""
 
     def envoyer_mail(self, adress, subject, body):
         destination_address = adress
@@ -35,7 +35,7 @@ class Gmail(object):
 
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
-        server.login(self.source_address, "secret_inf3005")
+        server.login(self.source_address, "")
         text = msg.as_string()
         server.sendmail(self.source_address, destination_address, text)
         server.quit()
