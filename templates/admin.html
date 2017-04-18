@@ -17,18 +17,17 @@
         			<tr>            
             			<td>
                             <a href="/article/{{article[2]}}">{{ article[1] }} </a>
-                            | <i>Publi&eacute le: {{ article[4] }}</i></td>
+                            | <i>Publi&eacute; le: {{ article[4] }}</i></td>
 						<td>
 			    			<div class="pull-right">
 			    				<a href="/admin-modif/{{article[2]}}" class="btn btn-block btn-primary">Modifier</a>
         					</div>
-        				</td>
-		    			                   
+        				</td>		    			                   
         			</tr>
         		{% endfor %}
         	</tbody>
     	</table>
     	<a href="/admin-nouveau" class="btn btn-small">Ajouter un nouvel article</a>	   	
-    <div>
+    </div>
 
 {% endblock %}

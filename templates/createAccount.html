@@ -2,23 +2,25 @@
 {% block content %}
 
 <div class="container">
-<div class="jumbotron">
+<div class="jumbotron" style="width: 50%; margin: auto; text-align:center;">
+  <h2>Cr&eacute;er votre compte</h2>
+  <br>
   {% if msg %}
     	<div class="alert alert-danger">
     		<p>{{ msg }}</p>
     	</div>    
 	{% endif %}
   <form class="form-signin" method="post">
-    <div class="form-group">
-    	<label>Nom d'utilisateur: </label>
-  	    <input type="text" name="username" class="form-control">
+    <div class="form-group input-group">
+    	<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+  	  <input type="text" name="username" class="form-control" placeholder="Nom d'utilisateur">
     </div>
-  	<div class="form-group">
-  		<label>Mot de passe: </label>
-  		<input type="password" name="password" class="form-control">
+  	<div class="form-group input-group">
+  		<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+  		<input type="password" name="password" class="form-control" placeholder="Mot de passe">
   	</div>
   	<div class="form-group">
-  		<input type="submit" name="login" class="form-control btn-primary btn-block">
+  		<button name="creer" class="form-control btn-primary btn-block"> Cr&eacute;er </button>
   	</div>
   </form>
 </div>

@@ -89,16 +89,17 @@ def login():
     password = request.form['password']
 
     if len(username) == 0 or len(password) == 0:
-        return render_template('login.html', msg="Un des champs est vide.")
+        return render_template('login.html', msg="Un des champs est vide.",
+                               username=username)
 
     if len(username) > 25:
         return render_template('login.html', msg="Nom d'utilisateur ou mot"
-                               " de passe invalide.")
+                               " de passe invalide.", username=username)
 
     user = get_database().get_user_login_info(username)
     if user is None:
         return render_template('login.html', msg="Nom d'utilisateur ou mot"
-                               " de passe invalide.")
+                               " de passe invalide.", username=username)
 
     salt = user[0]
     hashed_password = hashlib.sha512(password + salt).hexdigest()
@@ -110,7 +111,7 @@ def login():
         return redirect('/admin')
     else:
         return render_template('login.html', msg="Nom d'utilisateur ou mot"
-                               " de passe invalide.")
+                               " de passe invalide.", username=username)
 
 
 @app.route('/forgot-password', methods=['GET', 'POST'])
@@ -127,15 +128,12 @@ def mdp_oublie():
             get_database().save_token(email, jeton)
             url = "http://localhost:5000/nouveau-mdp/%s" % jeton
             entete = "Nouveau mot de passe"
-            msg = """Bonjour,
-
-Veuillez appuyer sur le lien suivant afin de créer un nouveau mot de passe.
-
+            msg = """Bonjour,\n
+Veuillez appuyer sur le lien suivant afin de créer un nouveau mot de passe.\n
 %s """ % url
             mail = Gmail()
             mail.envoyer_mail(email, entete, msg)
-            print msg
-        return redirect('/')
+        return redirect('/confirmation')
 
 
 @app.route('/nouveau-mdp/<jeton>', methods=['GET', 'POST'])
@@ -155,7 +153,6 @@ def nouveau_mdp(jeton):
         hashed_password = hashlib.sha512(password + salt).hexdigest()
         get_database().reset_password(email[0], salt, hashed_password)
         return redirect('/admin')
-
 
 
 @app.route('/logout')
@@ -188,20 +185,23 @@ def invitation():
             return render_template('invitation.html', msg="Le champ 'email' "
                                    "est vide!")
 
+        if get_database().get_user_by_email(email) is not None:
+            return render_template('invitation.html', msg="Cette utilisateur"
+                                   " est deja membre!")
+
         jeton = uuid.uuid4().hex
         get_database().save_token(email, jeton)
         url = "http://localhost:5000/creation-compte/%s" % jeton
         entete = "Invitation"
         msg = """Vous avec été invité pour devenir membre de notre site.
-Veuillez appuyer sur le lien suivant afin de créer votre compte. 
-
+Veuillez appuyer sur le lien suivant afin de créer votre compte.\n
 %s """ % url
         mail = Gmail()
         mail.envoyer_mail(email, entete, msg)
         return redirect('/admin')
 
 
-@app.route('/creation-compte/<jeton>', methods=['GET','POST'])
+@app.route('/creation-compte/<jeton>', methods=['GET', 'POST'])
 def creer_compte(jeton):
     email = get_database().get_email_by_token(jeton)
     if email is None:
@@ -213,16 +213,16 @@ def creer_compte(jeton):
         username = request.form['username']
         password = request.form['password']
         if len(username) == 0 or len(password) == 0:
-            return render_template('createAccount.html', msg= "Tous les "
+            return render_template('createAccount.html', msg="Tous les "
                                    "champs sont obligatoires.")
 
         if len(username) > 25:
-            return render_template('createAccount.html', msg= "Le nom "
+            return render_template('createAccount.html', msg="Le nom "
                                    "d'utilisateur doit avoir moins de 25"
                                    "caractères.")
 
-        if get_database().get_user(username) is not None:
-            return render_template('createAccount.html', msg= "Ce nom "
+        if get_database().get_user_login_info(username) is not None:
+            return render_template('createAccount.html', msg="Ce nom "
                                    "d'utilisateur existe déjà.")
 
         salt = uuid.uuid4().hex
@@ -252,6 +252,7 @@ def admin_modif(identifiant):
 
 
 @app.route('/update', methods=['POST'])
+@authentication_required
 def modifier_article():
     erreurs = []
     titre = request.form['titre']
@@ -279,6 +280,7 @@ def modifier_article():
 
 
 @app.route('/new', methods=['POST'])
+@authentication_required
 def nouvel_article():
     erreurs = validation_formulaire(request.form)
     titre = request.form['titre']
@@ -339,7 +341,7 @@ def verification_identifiant(ident):
 @app.route('/api/articles')
 def liste_articles():
     articles = get_database().get_articles_publie()
-    data = [{"titre": each[1], "auteur": each[3], 
+    data = [{"titre": each[1], "auteur": each[3],
             "url": "http://localhost:5000/article/"+each[2]}
             for each in articles]
     return jsonify(data)
@@ -386,7 +388,7 @@ def creer_article():
 def validation_json(data):
     valide = ['titre', 'identifiant', 'auteur', 'date_pub', 'paragraphe']
     for each in valide:
-        if not data.has_key(each):
+        if each not in data:
             return False
     return True
 

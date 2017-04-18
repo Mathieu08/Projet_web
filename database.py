@@ -81,21 +81,23 @@ class Database(object):
 
     def get_user_login_info(self, username):
         cursor = self.get_connection().cursor()
-        cursor.execute("select salt, hash from users where utilisateur = ?", (username,))
+        cursor.execute("select salt, hash from users where utilisateur = ?",
+                       (username,))
         user = cursor.fetchone()
         return user
 
     def save_session(self, session_id, username):
         connection = self.get_connection()
         cursor = connection.cursor()
-        cursor.execute("insert into sessions(id_session, utilisateur) values(?, ?)",
-                       (session_id, username))
+        cursor.execute("insert into sessions(id_session, utilisateur) "
+                       "values(?, ?)", (session_id, username))
         connection.commit()
 
     def delete_session(self, session_id):
         connection = self.get_connection()
         cursor = connection.cursor()
-        cursor.execute("delete from sessions where id_session = ?", (session_id,))
+        cursor.execute("delete from sessions where id_session = ?",
+                       (session_id,))
         connection.commit()
 
     def save_token(self, email, token):
@@ -117,7 +119,8 @@ class Database(object):
     def create_user(self, username, email, salt, hashed):
         connection = self.get_connection()
         cursor = connection.cursor()
-        cursor.execute("insert into users(utilisateur, email, salt, hash) values(?, ?, ?, ?)", (username, email, salt, hashed))
+        cursor.execute("insert into users(utilisateur, email, salt, hash) "
+                       "values(?, ?, ?, ?)", (username, email, salt, hashed))
         cursor.execute("delete from tokens where email = ?", (email,))
         connection.commit()
 

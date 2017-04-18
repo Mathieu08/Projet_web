@@ -2,19 +2,21 @@
 {% block content %}
 
 <div class="container">
-<div class="jumbotron">
+<div class="jumbotron" style="width: 50%; margin: auto; text-align:center;">
+  <h2>Inviter une personne</h2>
+  <br>
   {% if msg %}
     	<div class="alert alert-danger">
     		<p>{{ msg }}</p>
     	</div>    
 	{% endif %}
   <form class="form-signin" action="/admin-invitation" method="post">
-    <div class="form-group">
-    	<label>Email: </label>
-  	    <input type="email" name="email" class="form-control">
+    <div class="form-group input-group">
+    	<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+  	  <input type="email" name="email" class="form-control" placeholder="Adresse courriel">
     </div>
   	<div class="form-group">
-  		<input type="submit" name="login" class="form-control btn-primary btn-block">
+  		<button name="invite" class="form-control btn-primary btn-block"> Inviter </button>
   	</div>
   </form>
 </div>
