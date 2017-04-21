@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/css/documentation.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+	<h1>Documentation de l'API</h1>
+	<br>
+	<div class="input-group col-xs-6">
+	    <span class="input-group-addon get">GET</span>
+		<div class="form-control input-lg">
+			http://localhost:5000/api/articles
+		</div>
+	</div>
+	<br>
+	<div class="desc">
+		<p>
+		    Retourne une liste sous format JSON contenant tous les articles pulbi&eacute;s et le serveur renvoie un code 200.
+		    <br>
+            Les objets articles de la liste JSON contiennent le titre, l'auteur et l'url complet pour chaque article.
+		</p>
+	</div>
+	<br>
+	<div class="input-group col-xs-6">
+	    <span class="input-group-addon get">GET</span>
+		<div class="form-control input-lg">
+			http://localhost:5000/api/article/{identifiant}
+		</div>
+	</div>
+	<br>
+	<div class="desc">
+		<p>
+		    Retourne les informations de l'article correspondant &agrave; l'identifiant pass&eacute; en param&egrave;tre et le serveur renvoie un code 200.
+		    <br>
+		    Si l'identifiant pass&eacute; en param&egrave;tre est inconnu le serveur renvoie un code 404.
+		</p>
+	</div>
+	<br>
+	<div class="input-group col-xs-6">
+	    <span class="input-group-addon post">POST</span>
+		<div class="form-control input-lg">
+			http://localhost:5000/api/creer-article
+		</div>
+	</div>
+	<br>
+	<div class="desc">
+		<p>
+		    Cr&eacute;er un nouvel article &agrave; partir des donn&eacute;es fournis sous format JSON.
+		    <br>
+		    Si l'objet est cr&eacute;&eacute; avec succ&egrave;s le serveur renvoie un code 201, si la requ&ecirc;te est invalide ou l'identifiant existe d&eacute;j&agrave; le serveur renvoie un code 400.
+		</p>
+		<div class="exemple">
+			<h4>Exemple de format JSON pour le POST:</h4>
+		    <img src="/images/post.png">
+		</div>
+	</div>
+	<br>
+</div>
+
+{% endblock %}

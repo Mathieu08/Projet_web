@@ -120,6 +120,9 @@ def mdp_oublie():
         return render_template('forgot-password.html')
     else:
         email = request.form['email']
+        if not re.match(r'^[\w\.]+@\w+\.[\w\.]+$', email):
+            return render_template('forgot-password.html', msg="L'adresse "
+                                   "courriel n'est pas valide.")
         if len(email) == 0:
             return render_template('forgot-password.html', msg="Le champ "
                                    "'email' est vide!")
@@ -133,7 +136,7 @@ Veuillez appuyer sur le lien suivant afin de créer un nouveau mot de passe.\n
 %s """ % url
             mail = Gmail()
             mail.envoyer_mail(email, entete, msg)
-        return redirect('/confirmation')
+        return redirect('/admin')
 
 
 @app.route('/nouveau-mdp/<jeton>', methods=['GET', 'POST'])
@@ -146,7 +149,7 @@ def nouveau_mdp(jeton):
     else:
         password = request.form['password']
         if len(password) == 0:
-            return render_template('reset-password.html', msg="Le champ est"
+            return render_template('reset-password.html', msg="Le champ est "
                                    "vide.")
 
         salt = uuid.uuid4().hex
@@ -181,6 +184,9 @@ def invitation():
         return render_template('invitation.html')
     else:
         email = request.form['email']
+        if not re.match(r'^[\w\.]+@\w+\.[\w\.]+$', email):
+            return render_template('invitation.html', msg="L'adresse "
+                                   "courriel n'est pas valide.")
         if len(email) == 0:
             return render_template('invitation.html', msg="Le champ 'email' "
                                    "est vide!")
@@ -213,17 +219,17 @@ def creer_compte(jeton):
         username = request.form['username']
         password = request.form['password']
         if len(username) == 0 or len(password) == 0:
-            return render_template('createAccount.html', msg="Tous les "
-                                   "champs sont obligatoires.")
+            return render_template('createAccount.html', msg="Tous les champs"
+                                   " sont obligatoires.", username=username)
 
         if len(username) > 25:
             return render_template('createAccount.html', msg="Le nom "
                                    "d'utilisateur doit avoir moins de 25"
-                                   "caractères.")
+                                   " caracteres.")
 
         if get_database().get_user_login_info(username) is not None:
             return render_template('createAccount.html', msg="Ce nom "
-                                   "d'utilisateur existe déjà.")
+                                   "d'utilisateur existe deja.")
 
         salt = uuid.uuid4().hex
         hashed_password = hashlib.sha512(password + salt).hexdigest()
@@ -336,6 +342,11 @@ def verification_identifiant(ident):
                                "existe deja. Veuillez en entrer un nouveau.")
     else:
         return render_template('identifiant.html')
+
+
+@app.route('/api/documentation')
+def documentation_api():
+    return render_template('documentation.html')
 
 
 @app.route('/api/articles')

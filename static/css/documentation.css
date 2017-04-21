@@ -1,0 +1,21 @@
+.desc {
+	padding-left: 60px;
+	width: 500px;
+}
+
+.get {
+	width: 64px;
+	color: #FFF;
+	background-color: #337ab7;
+	border-color: #2e6da4;
+}
+
+.post {
+	color: #FFF;
+	background-color: #5cb85c; 
+	border-color: #4cae4c;
+}
+
+.exemple {
+	text-align: center;
+}

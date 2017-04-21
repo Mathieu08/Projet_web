@@ -1,13 +1,18 @@
 {% extends "layout.html" %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/css/login.css">
+{% endblock %}
+
 {% block content %}
 
 <div class="container">
-<div class="jumbotron" style="width: 50%; margin: auto; text-align:center;">
+<div class="jumbotron corps">
   <h2>Connexion</h2>
   <br>
   {% if msg %}
     	<div class="alert alert-danger">
-    		<p>{{ msg }}</p>
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+          {{ msg }}
     	</div>    
 	{% endif %}
   <form class="form-signin" action="/login" method="post">

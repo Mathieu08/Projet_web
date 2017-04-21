@@ -4,9 +4,10 @@
 	<meta charset="utf-8">
 	<title>Articles</title>
 	<link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/vendor/datepicker/datepicker3.min.css" />
+    <link rel="stylesheet" href="/vendor/datepicker/datepicker3.min.css">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-	<link rel="stylesheet" type="text/css" href="/layout.css">
+	<link rel="stylesheet" type="text/css" href="/css/layout.css">
+    {% block css %}{% endblock %}
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top">
