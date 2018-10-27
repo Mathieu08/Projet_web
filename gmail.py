@@ -2,8 +2,8 @@
 
 import smtplib
 import json
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
 
 
 class Gmail(object):
