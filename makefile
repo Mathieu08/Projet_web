@@ -1,2 +1,4 @@
+export FLASK_APP=index.py
+
 run:
-	gunicorn index:app
+	python -m flask run
